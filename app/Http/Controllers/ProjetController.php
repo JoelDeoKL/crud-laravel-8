@@ -14,7 +14,9 @@ class ProjetController extends Controller
      */
     public function index()
     {
-        //
+        $projets = Projet::latest()->paginate(5);
+        return view('projets.index', compact('projets'))
+        ->with('i', (request()->input('page', 1) -1) * 5);
     }
 
     /**
@@ -24,7 +26,7 @@ class ProjetController extends Controller
      */
     public function create()
     {
-        //
+        return view('projets.create');
     }
 
     /**
@@ -35,7 +37,17 @@ class ProjetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'introduction' => 'required',
+            'location' => 'required',
+            'cost' => 'required'
+        ]);
+
+        Projet::create($request->all());
+
+        return redirect()->route('projets.index')
+        ->with('succes', 'Le Projet a bel et bien été créer.');
     }
 
     /**
@@ -46,7 +58,7 @@ class ProjetController extends Controller
      */
     public function show(Projet $projet)
     {
-        //
+        return view('projets.show', compact('projet'));
     }
 
     /**
@@ -57,7 +69,7 @@ class ProjetController extends Controller
      */
     public function edit(Projet $projet)
     {
-        //
+        return view('projets.edit', compact('projet'));
     }
 
     /**
@@ -69,7 +81,17 @@ class ProjetController extends Controller
      */
     public function update(Request $request, Projet $projet)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'introduction' => 'required',
+            'location' => 'required',
+            'cost' => 'required'
+        ]);
+
+        $projet->update($request->all());
+
+        return redirect()->route('projets.index')
+        ->with('succes', 'La modification du projet a reussi');
     }
 
     /**
@@ -80,6 +102,9 @@ class ProjetController extends Controller
      */
     public function destroy(Projet $projet)
     {
-        //
+        $projet->delete();
+
+        return redirect()->route('projets.index')
+        ->with('succes', 'La supression a bien reussi.');
     }
 }
