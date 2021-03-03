@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Projet;
+use App\Project;
 use Illuminate\Http\Request;
 
-class ProjetController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,10 @@ class ProjetController extends Controller
      */
     public function index()
     {
-        $projets = Projet::latest()->paginate(5);
-        return view('projets.index', compact('projets'))
-        ->with('i', (request()->input('page', 1) -1) * 5);
+        $projects = Project::latest()->paginate(5);
+
+        return view('projects.index', compact('projects'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -26,7 +27,7 @@ class ProjetController extends Controller
      */
     public function create()
     {
-        return view('projets.create');
+        return view('projects.create');
     }
 
     /**
@@ -44,42 +45,41 @@ class ProjetController extends Controller
             'cost' => 'required'
         ]);
 
-        Projet::create($request->all());
+        Project::create($request->all());
 
-        return redirect()->route('projets.index')
-        ->with('succes', 'Le Projet a bel et bien été créer.');
+        return redirect()->route('projects.index')
+            ->with('success', 'Project created successfully.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Projet  $projet
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Projet $projet)
+    public function show(Project $project)
     {
-        return view('projets.show', compact('projet'));
+        return view('projects.show', compact('project'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Projet  $projet
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Projet $projet)
+    public function edit(Project $project)
     {
-        return view('projets.edit', compact('projet'));
+        return view('projects.edit', compact('project'));
     }
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Projet  $projet
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Projet $projet)
+    public function update(Request $request, Project $project)
     {
         $request->validate([
             'name' => 'required',
@@ -87,24 +87,22 @@ class ProjetController extends Controller
             'location' => 'required',
             'cost' => 'required'
         ]);
+        $project->update($request->all());
 
-        $projet->update($request->all());
-
-        return redirect()->route('projets.index')
-        ->with('succes', 'La modification du projet a reussi');
+        return redirect()->route('projects.index')
+            ->with('success', 'Project updated successfully');
     }
-
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Projet  $projet
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Projet $projet)
+    public function destroy(Project $project)
     {
-        $projet->delete();
+        $project->delete();
 
-        return redirect()->route('projets.index')
-        ->with('succes', 'La supression a bien reussi.');
+        return redirect()->route('projects.index')
+            ->with('success', 'Project deleted successfully');
     }
 }

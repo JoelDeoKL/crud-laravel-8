@@ -15,4 +15,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-Route::resource('projet', 'ProjetController::class');
+Route::resource('projects', 'ProjectController');
+

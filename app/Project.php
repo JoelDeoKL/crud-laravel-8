@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Projet extends Model
-{
-    use HasFactory;
+class Project extends Model
+{    
+    //use HasFactory;
 
-    protected $table = "projets";
+    protected $table = "projects";
     public $timestamps = true;
 
     protected $casts = [
@@ -16,5 +16,4 @@ class Projet extends Model
     ];
 
     protected $guarded = [];
-
 }
